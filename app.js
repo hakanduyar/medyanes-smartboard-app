@@ -8,7 +8,7 @@ const sizeSlider = document.querySelector("#size-slider");
 const colorBtns = document.querySelectorAll(".colors .option");
 const colorPicker = document.querySelector("#color-picker");
 const clearCanvas = document.querySelector(".clear-canvas");
-const saveImg = document.querySelector(".save-img");
+// const saveImg = document.querySelector(".save-img");
 const toolsBoard = document.querySelector(".tools-board");
 const scrollContainer = document.querySelector(".scroll-container");
 const zoomInBtn = document.getElementById("zoom-in");
@@ -335,12 +335,12 @@ sizeSlider.addEventListener("change", () => {
   brushWidth = sizeSlider.value;
 });
 
-saveImg.addEventListener("click", () => {
-  const link = document.createElement("a");
-  link.download = `${baseImageName}_Page_${pageNum.toString().padStart(2, "0")}.png`;
-  link.href = drawingCanvas.toDataURL();
-  link.click();
-});
+// saveImg.addEventListener("click", () => {
+//   const link = document.createElement("a");
+//   link.download = `${baseImageName}_Page_${pageNum.toString().padStart(2, "0")}.png`;
+//   link.href = drawingCanvas.toDataURL();
+//   link.click();
+// });
 
 const rgbToHex = (rgb) => {
   const [r, g, b] = rgb.match(/\d+/g).map(Number);
