@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Canvas Drawing App</title>
+    <link rel="stylesheet" href="app.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.min.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div id="popup" class="popup">
+        <div class="popup-content">
+          <button class="close">×</button>
+          <div id="number-pad">
+            <input type="text" id="page-input" readonly />
+            <div class="num-buttons">
+              <button>1</button><button>2</button><button>3</button>
+              <button>4</button><button>5</button><button>6</button>
+              <button>7</button><button>8</button><button>9</button>
+              <button>0</button><button id="clear">Sil</button>
+              <button id="go-button">Git</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="keyboard-popup" class="popup">
+        <div class="popup-content">
+            <span id="close-keyboard" class="close">&times;</span>
+            <div id="keyboard">
+                <div class="keypad">
+                    <button class="key">Q</button><button class="key">W</button><button class="key">E</button>
+                    <button class="key">R</button><button class="key">T</button><button class="key">Y</button>
+                    <button class="key">U</button><button class="key">I</button><button class="key">O</button>
+                    <button class="key">P</button><button class="key">A</button><button class="key">S</button>
+                    <button class="key">D</button><button class="key">F</button><button class="key">G</button>
+                    <button class="key">H</button><button class="key">J</button><button class="key">K</button>
+                    <button class="key">L</button><button class="key">Z</button><button class="key">X</button>
+                    <button class="key">C</button><button class="key">V</button><button class="key">B</button>
+                    <button class="key">N</button><button class="key">M</button>
+                  </div>
+                  <button id="clear-keyboard">Sil</button>
+                  <button id="submit-keyboard">Submit</button>
+              </div>
+              <input type="text" id="keyboard-input">
+          </div>
+      </div>
+      <section class="drawing-board">
+        <div class="canvas-container scroll-container" >
+          <canvas id="pdf-canvas"></canvas>
+        </div>
+      </section>
+      <section class="tools-board">
+        <div class="row shapes">
+          <!-- <label class="title">Shapes</label> -->
+          <ul class="options">
+            <ul class="shape top-shape">
+              <li class="option tool" id="rectangle">
+                <img src="icons/x-18.png" alt="" />
+              </li>
+              <div class="vertical-line"></div>
+              <li class="option tool" id="rectangle-filled">
+                <img src="icons/x-12.png" alt="" />
+              </li>
+            </ul>
+            <div class="horizontal-line"></div>
+            <ul class="shape">            
+              <li class="option tool" id="circle">
+                <img src="icons/x-20.png" alt="" />
+              </li>
+              <li class="option tool" id="circle-filled">
+                <img src="icons/x-14.png" alt="" />
+              </li>
+            </ul>
+            <div class="horizontal-line"></div>
+            <ul class="shape">            
+              <li class="option tool" id="triangle">
+                <img src="icons/x-19.png" alt="" />
+              </li>
+              <li class="option tool" id="triangle-filled">
+                <img src="icons/x-13.png" alt="" />
+              </li>
+            </ul>
+            <div class="horizontal-line"></div>
+          </ul>
+        </div>
+        <div class="row draw">
+          <ul class="options">
+            <li class="option active tool" id="brush">
+              <img src="icons/x-05.png" alt="" />
+            </li>
+            <!-- <div class="vertical-line"></div> -->
+            <li class="option tool" id="eraser" onclick="eraseDrawingArea(50, 50, 100, 100)">
+              <img src="icons/x-01.png" alt="" />
+            </li>
+          </ul>
+          <li class="option">
+            <input type="checkbox" id="fill-color" />
+          </li>
+          <li class="option">
+            <input type="range" id="size-slider" min="1" max="30" value="5" />
+          </li>
+        </div>
+        <div class="row colors">
+          <ul class="options">
+            <li class="option"></li>
+            <li class="option selected"></li>
+            <li class="option"></li>
+            <li class="option">
+              <input type="color" id="color-picker" value="#4A98F7" />
+            </li>
+          </ul>
+        </div>
+        <div class="row buttons">
+          <button  class="clear-canvas" >Sayfayı Temizle</button>
+          <button class="save-img">Ekran Görüntüsü Al</button>
+        </div>
+        <div class="row tools">
+          <ul class="options icon-group">
+            <li class="option tool" id="undo-btn">
+              <img src="icons/undo.png" alt="Undo" />
+            </li>
+            <li class="option tool" id="zoom-out">
+              <img src="icons/zoom-min.png" alt="Zoom Out" />
+            </li>
+            <li class="option tool" id="navigate">
+              <img src="icons/zoom.png" />
+            </li>
+            <li class="option tool" id="zoom-in">
+              <img src="icons/zoom-plus.png" alt="Zoom In" />
+            </li>
+            <li class="option tool" id="redo-btn">
+              <img src="icons/redo.png" alt="Redo" />
+            </li>
+          </ul>
+        </div>
+        <div class="row nav">
+         <ul class="page-tool">
+          <li class="page-tool-btn" id="prev-page">
+          <img src="icons/prev-button.png" alt="Previous Page" />
+          </li>
+          <li class="page-tool-btn" id="next-page">
+          <img src="icons/play-button.png" alt="Next Page" />
+          </li>
+         </ul>
+        </div>
+        <!-- <div class="option-tool">
+            <li class="option-tool-btn" id="toggle-mode">
+              <span id="kaydırma-modu">Kaydırma Modu</span>
+            </li>
+        </div> -->
+        <div class="page-number">
+          <span id="page-number-btn">
+            <span id="current-page">1</span> / <span id="total-pages">10</span>
+          </span>
+        </div>
+      </section>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>

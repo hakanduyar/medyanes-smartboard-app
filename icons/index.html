@@ -1,0 +1,112 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Drawing App with PDFJS</title>
+    <link rel="stylesheet" href="style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.6.172/pdf.min.js"></script>
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <div class="container">
+      <section class="tools-board">
+        <div class="row">
+          <label class="title">Shapes</label>
+          <ul class="options">
+            <li class="option tool" id="rectangle">
+              <img src="icons/rectangle.svg" alt="" />
+              <span>Rectangle</span>
+            </li>
+            <li class="option tool" id="rectangle-filled">
+              <img src="icons/rectangle-filled.svg" alt="" />
+              <span>Rectangle Filled</span>
+            </li>
+            <li class="option tool" id="circle">
+              <img src="icons/circle.svg" alt="" />
+              <span>Circle</span>
+            </li>
+            <li class="option tool" id="circle-filled">
+              <img src="icons/circle-filled.svg" alt="" />
+              <span>Circle Filled</span>
+            </li>
+            <li class="option tool" id="triangle">
+              <img src="icons/triangle.svg" alt="" />
+              <span>Triangle</span>
+            </li>
+            <li class="option tool" id="triangle-filled">
+              <img src="icons/triangle-filled.svg" alt="" />
+              <span>Triangle Filled</span>
+            </li>
+            <li class="option">
+              <input type="checkbox" id="fill-color" />
+              <label for="fill-color">Fill color</label>
+            </li>
+          </ul>
+        </div>
+        <div class="row">
+          <label class="title">Options</label>
+          <ul class="options">
+            <li class="option active tool" id="brush">
+              <img src="icons/brush.svg" alt="" />
+              <span>Brush</span>
+            </li>
+            <li class="option tool" id="eraser">
+              <img src="icons/eraser.svg" alt="" />
+              <span>Eraser</span>
+            </li>
+            <li class="option">
+              <input type="range" id="size-slider" min="1" max="30" value="5" />
+            </li>
+          </ul>
+        </div>
+        <div class="row colors">
+          <label class="title">Colors</label>
+          <ul class="options">
+            <li class="option"></li>
+            <li class="option selected"></li>
+            <li class="option"></li>
+            <li class="option"></li>
+            <li class="option">
+              <input type="color" id="color-picker" value="#4A98F7" />
+            </li>
+          </ul>
+        </div>
+        <div class="row">
+          <label class="title">Tools</label>
+          <ul class="options">
+            <li class="option tool" id="clear-canvas">
+              <img src="icons/clear-svgrepo.svg" alt="Clear Canvas" />
+              <span>Clear Canvas</span>
+            </li>
+            <li class="option tool" id="save-img">
+              <img src="icons/save-svgrepo.svg" alt="Save As Image" />
+              <span>Save As Image</span>
+            </li>
+            <div class="row">
+              <label class="title"></label>
+              <ul class="options icon-group">
+                <li class="option tool" id="prev-page">
+                  <img src="icons/previous-svgrepo.svg" alt="Previous Page" />
+                </li>
+                <li class="option tool" id="zoom-out">
+                  <img src="icons/zoom-minus-svgrepo.svg" alt="Zoom Out" />
+                </li>
+                <li class="option tool" id="zoom-in">
+                  <img src="icons/zoom-plus-svgrepo.svg" alt="Zoom In" />
+                </li>
+                <li class="option tool" id="next-page">
+                  <img src="icons/next-svgrepo.svg" alt="Next Page" />
+                </li>
+              </ul>
+            </div>
+          </ul>
+        </div>
+      </section>
+      <section class="drawing-board">
+        <canvas></canvas>
+      </section>
+    </div>
+  </body>
+</html>
