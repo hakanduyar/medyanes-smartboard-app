@@ -8,6 +8,7 @@ const colorBtns = document.querySelectorAll(".colors .option");
 const colorPicker = document.querySelector("#color-picker");
 const clearCanvas = document.querySelector(".clear-canvas");
 const toolBtns = document.querySelectorAll(".tool");
+const mediaBtnContainer = document.querySelector(".bottom-buttons");
 const dropdownToolBtns = document.querySelectorAll(
   ".dropdown-menu .option.tool"
 );
@@ -135,32 +136,31 @@ const showImage = (num) => {
 
   Promise.any([loadImage("png"), loadImage("jpg")])
     .then((img) => {
-      
       canvas.width = img.width;
       canvas.height = img.height;
       drawingCanvas.width = img.width;
       drawingCanvas.height = img.height;
-      
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
       // setCanvasDimensions();
-      
+
       const maxWidth = window.innerWidth * 0.9;
       const maxHeight = window.innerHeight * 0.9;
-      const scale = Math.min(window.innerWidth / img.width, window.innerHeight / img.height);
-  
+      const scale = Math.min(
+        window.innerWidth / img.width,
+        window.innerHeight / img.height
+      );
 
       // if (newHeight > maxHeight) {
       //   newHeight = maxHeight;
       //   newWidth = newHeight * aspectRatio;
       // }
 
-      
       const canvasWrapper = document.querySelector(".canvas-wrapper");
       canvasWrapper.style.width = `${img.width * scale}px`;
       canvasWrapper.style.height = `${img.height * scale}px`;
-      
-      
+
       canvas.style.width = "100%";
       canvas.style.height = "100%";
       // drawingCanvas.style.position = "absolute";
@@ -168,11 +168,11 @@ const showImage = (num) => {
       // drawingCanvas.style.top = "0";
       drawingCanvas.style.width = "100%";
       drawingCanvas.style.height = "100%";
-      
+
       // const scrollContainer = document.querySelector(".scroll-container");
       // scrollContainer.scrollLeft = (canvasWrapper.clientWidth - img.width * scale) / 2;
       // scrollContainer.scrollTop = (canvasWrapper.clientHeight - img.height * scale) / 2;
-      
+
       const savedDrawing = localStorage.getItem(`drawing_Page_${num}`);
       if (savedDrawing) {
         const savedImg = new Image();
@@ -194,7 +194,6 @@ const showImage = (num) => {
       console.error("Resim yüklenemedi:", error);
     });
 };
-
 
 showImage(pageNum);
 window.addEventListener("resize", () => {
@@ -220,6 +219,7 @@ const nextPage = () => {
     clearDrawingCanvas();
     updatePageNumber(); // Sayfa numarasını güncelle
     resetZoom();
+    updateMediaButtonVisibility();
   }
 };
 
@@ -230,6 +230,7 @@ const prevPage = () => {
     clearDrawingCanvas();
     updatePageNumber(); // Sayfa numarasını güncelle
     resetZoom();
+    updateMediaButtonVisibility();
   }
 };
 
@@ -292,13 +293,12 @@ function getCanvasCoordinates(e) {
   const rect = drawingCanvas.getBoundingClientRect();
   const scaleX = drawingCanvas.width / rect.width;
   const scaleY = drawingCanvas.height / rect.height;
-  
+
   const x = (e.clientX - rect.left) * scaleX;
   const y = (e.clientY - rect.top) * scaleY;
-  
+
   return { x, y };
 }
-
 
 const drawing = (e) => {
   if (!isDrawing) return;
@@ -306,13 +306,20 @@ const drawing = (e) => {
   const { x, y } = getCanvasCoordinates(e);
 
   // Araç kontrolleri: Sadece seçilen araç için çizim yap
-  if (selectedTool === "brush" || selectedTool === "eraser" || selectedTool === "marker") {
+  if (
+    selectedTool === "brush" ||
+    selectedTool === "eraser" ||
+    selectedTool === "marker"
+  ) {
     if (snapshot) {
       drawingCtx.putImageData(snapshot, 0, 0);
     }
     drawingCtx.lineTo(x, y);
     drawingCtx.stroke();
-  } else if (selectedTool === "rectangle" || selectedTool === "rectangle-filled") {
+  } else if (
+    selectedTool === "rectangle" ||
+    selectedTool === "rectangle-filled"
+  ) {
     if (snapshot) {
       drawingCtx.putImageData(snapshot, 0, 0);
     }
@@ -322,7 +329,10 @@ const drawing = (e) => {
       drawingCtx.putImageData(snapshot, 0, 0);
     }
     drawCircle(e);
-  } else if (selectedTool === "triangle" || selectedTool === "triangle-filled") {
+  } else if (
+    selectedTool === "triangle" ||
+    selectedTool === "triangle-filled"
+  ) {
     if (snapshot) {
       drawingCtx.putImageData(snapshot, 0, 0);
     }
@@ -331,8 +341,6 @@ const drawing = (e) => {
     drawArrow(e);
   }
 };
-
-
 
 const setDrawingStyle = () => {
   drawingCtx.lineWidth = brushWidth;
@@ -480,9 +488,6 @@ const drawRect = (e) => {
   }
 };
 
-
-
-
 const drawCircle = (e) => {
   drawingCtx.beginPath();
   const { x, y } = getCanvasCoordinates(e);
@@ -499,9 +504,6 @@ const drawCircle = (e) => {
     drawingCtx.stroke();
   }
 };
-
-
-
 
 const drawTriangle = (e) => {
   drawingCtx.beginPath();
@@ -520,9 +522,6 @@ const drawTriangle = (e) => {
     drawingCtx.stroke();
   }
 };
-
-
-
 
 toolBtns.forEach((btn) => {
   btn.addEventListener("click", () => {
@@ -545,33 +544,30 @@ toolBtns.forEach((btn) => {
   });
 });
 
+// dropdownToolBtns.forEach((btn) => {
+//   btn.addEventListener("click", () => {
+//     const toolId = btn.id;
+//     selectedTool = toolId;
 
+//     if (toolId === "rectangle-filled") {
+//       fillColor.checked = true;
+//       selectedTool = "rectangle";
+//     } else if (toolId === "circle-filled") {
+//       fillColor.checked = true;
+//       selectedTool = "circle";
+//     } else if (toolId === "triangle-filled") {
+//       fillColor.checked = true;
+//       selectedTool = "triangle";
+//     } else if (toolId === "marker") {
+//       fillColor.checked = false;
+//     } else {
+//       fillColor.checked = false;
+//     }
 
-
-  // dropdownToolBtns.forEach((btn) => {
-  //   btn.addEventListener("click", () => {
-  //     const toolId = btn.id;
-  //     selectedTool = toolId;
-
-  //     if (toolId === "rectangle-filled") {
-  //       fillColor.checked = true;
-  //       selectedTool = "rectangle";
-  //     } else if (toolId === "circle-filled") {
-  //       fillColor.checked = true;
-  //       selectedTool = "circle";
-  //     } else if (toolId === "triangle-filled") {
-  //       fillColor.checked = true;
-  //       selectedTool = "triangle";
-  //     } else if (toolId === "marker") {
-  //       fillColor.checked = false;
-  //     } else {
-  //       fillColor.checked = false;
-  //     }
-
-  //     setDrawingStyle();
-  //     document.querySelector(".dropdown-menu").style.display = "none";
-  //   });
-  // });
+//     setDrawingStyle();
+//     document.querySelector(".dropdown-menu").style.display = "none";
+//   });
+// });
 
 colorBtns.forEach((btn) => {
   btn.addEventListener("click", () => {
@@ -671,10 +667,11 @@ const updateZoom = () => {
 
   // Scroll ayarlarını güncelleyin
   const scrollContainer = document.querySelector(".scroll-container");
-  scrollContainer.scrollLeft = (canvasWrapper.clientWidth * zoomLevel - window.innerWidth) / 2;
-  scrollContainer.scrollTop = (canvasWrapper.clientHeight * zoomLevel - window.innerHeight) / 2;
+  scrollContainer.scrollLeft =
+    (canvasWrapper.clientWidth * zoomLevel - window.innerWidth) / 2;
+  scrollContainer.scrollTop =
+    (canvasWrapper.clientHeight * zoomLevel - window.innerHeight) / 2;
 };
-
 
 // Zoom in ve zoom out butonları
 zoomInBtn.addEventListener("click", () => {
@@ -709,7 +706,6 @@ const resetZoom = () => {
   scrollContainer.scrollLeft = 0;
   scrollContainer.scrollTop = 0;
 };
-
 
 document.addEventListener("DOMContentLoaded", function () {
   // const soundButtonsPanel = document.getElementById("sound-buttons-panel");
@@ -813,17 +809,8 @@ const mediaData = {
     },
   },
   bp2: {
-    game: {
+    sound: {
       9: "okulYolu9",
-      20: "okulYolu20",
-      21: "okulYolu21",
-      27: "okulYolu27",
-      36: "okulYolu36",
-      37: "okulYolu37",
-      39: "okulYolu39",
-      40: "okulYolu40",
-      42: "okulYolu42",
-      48: "okulYolu48",
     },
   },
   bp3: {
@@ -978,41 +965,53 @@ document.addEventListener("mouseup", stopDragging);
 document.getElementById("next-page").addEventListener("click", nextPage);
 document.getElementById("prev-page").addEventListener("click", prevPage);
 
-// toggleModeBtn.addEventListener("click", togglePanMode);
-// drawingCanvas.addEventListener("mousedown", startDraw);
-// drawingCanvas.addEventListener("mousemove", drawing);
+function updateMediaButtonVisibility() {
+  const currentBookMedia = mediaData[baseImageName];
+  const currentPage = pageNum;
+  const soundButtonsPanel = document.getElementById("sound-buttons-panel");
 
-// drawingCanvas.addEventListener("mouseup", () => {
-//   isDrawing = false;
-//   drawingCtx.globalCompositeOperation = "source-over"; // Silgi kullanımından sonra normal çizim moduna dön
+  const buttons = {
+    "activity-btn": "game",
+    "video-btn": "video",
+    "music-btn": "music",
+  };
 
-//   // Çizimi kaydet
-//   const drawingData = drawingCanvas.toDataURL();
-//   localStorage.setItem(`drawing_Page_${pageNum}`, drawingData);
-// });
+  let hasVisibleMedia = false;
+  let hasOnlySound = false;
 
-// document.getElementById('shapes-icon').addEventListener('click', function() {
-//   var dropdown = document.querySelector('.dropdown-menu');
-//   var isVisible = dropdown.style.display === 'block';
+  // Önce sound dışındaki medya türlerini kontrol edelim
+  for (const [btnId, mediaType] of Object.entries(buttons)) {
+    const button = document.getElementById(btnId);
+    const hasMedia =
+      currentBookMedia &&
+      currentBookMedia[mediaType] &&
+      currentBookMedia[mediaType][currentPage];
 
-//   // Diğer dropdown menüleri varsa, onları kapat
-//   document.querySelectorAll('.dropdown-menu').forEach(function(menu) {
-//     menu.style.display = 'none';
-//   });
+    if (hasMedia) {
+      button.style.display = "inline-block";
+      hasVisibleMedia = true;
+    } else {
+      button.style.display = "none";
+    }
+  }
 
-//   // Tıklanan menüyü aç/kapat
-//   dropdown.style.display = isVisible ? 'none' : 'block';
-// });
+  // Şimdi sound'u kontrol edelim
+  const hasSound =
+    currentBookMedia &&
+    currentBookMedia.sound &&
+    currentBookMedia.sound[currentPage];
+  if (hasSound) {
+    soundButtonsPanel.style.display = "flex";
+    hasOnlySound = !hasVisibleMedia;
+  } else {
+    soundButtonsPanel.style.display = "none";
+  }
 
-// // Menü dışında tıklama ile menüyü kapat
-// document.addEventListener('click', function(event) {
-//   var target = event.target;
-//   var dropdown = document.querySelector('.dropdown-menu');
-
-//   if (!target.closest('#sekiller') && dropdown.style.display === 'block') {
-//     dropdown.style.display = 'none';
-//   }
-// });
+  // Ana container'ın görünürlüğünü ayarlayalım
+  mediaBtnContainer.style.display =
+    hasVisibleMedia && !hasOnlySound ? "flex" : "none";
+}
+window.addEventListener("load", updateMediaButtonVisibility);
 
 function startPan(e) {
   if (isDrawing) return;
@@ -1046,7 +1045,7 @@ function endPan() {
 document.addEventListener("DOMContentLoaded", () => {
   // Sayfa numarası popup işlemleri
   const popup = document.getElementById("popup");
-  const openPopupButton = document.getElementById("page-number-btn");
+  const openPopupButton = document.getElementById("page-number");
   const closePopupButton = document.querySelector(".popup .close");
   const goButton = document.getElementById("go-button");
   const pageInput = document.getElementById("page-input");
@@ -1138,8 +1137,9 @@ document.addEventListener("DOMContentLoaded", () => {
       pageNum = pageNumber;
       showImage(pageNum);
       clearDrawingCanvas();
-      currentPageElement.textContent = pageNum; // Sayfa numarasını güncelle
+      currentPageElement.textContent = pageNum;
       popup.style.display = "none";
+      updateMediaButtonVisibility();
     }
   });
 

@@ -43,6 +43,8 @@ body {
   margin: auto;
 }
 
+
+
 .scroll-container {
   display: flex;
   align-items: center;
@@ -60,7 +62,10 @@ body {
   width: 100%;
   height: 100%;
   transform-origin: center center; /* Zoom merkezini ayarla */
-
+  padding: 30px 0; /* Üst ve alt boşluk 10px */
+  display: flex; /* Ortalamak için kullanabilirsiniz */
+  /* justify-content: center; Ortalamak için */
+  align-items: center; /* Ortalamak için */
 }
 
 canvas {
@@ -69,6 +74,7 @@ canvas {
   left: 0;
   max-width: none; /* Zoom sırasında genişliği kontrol et */
   max-height: none; /* Zoom sırasında yüksekliği kontrol et */
+
 }
 #pdf-canvas {
   position: relative;
