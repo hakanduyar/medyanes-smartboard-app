@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Canvas Drawing App</title>
     <link rel="stylesheet" href="app.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.min.js"></script> -->
   </head>
   <body>
     <div class="container">
@@ -13,7 +13,7 @@
         <div class="popup-content">
           <button class="close">×</button>
           <div id="number-pad">
-            <input type="text" id="page-input" readonly />
+            <input type="text" id="page-input" value="Sayfa No" readonly> 
             <div class="num-buttons">
               <button>1</button><button>2</button><button>3</button>
               <button>4</button><button>5</button><button>6</button>
@@ -45,40 +45,83 @@
               <input type="text" id="keyboard-input">
           </div>
       </div>
-      <section class="drawing-board">
-        <div class="canvas-container scroll-container" >
+      <div class="scroll-container">
+        <div class="canvas-wrapper">
           <canvas id="pdf-canvas"></canvas>
+          <canvas id="drawing-canvas"></canvas> <!-- Drawing Canvas burada olmalı -->
         </div>
-      </section>
+      </div>
       <section class="tools-board">
+        <div class="toolbar-head">
+          <div class="icon left-icon" id="expand">
+            <img src="icons/expand (1).png">
+          </div>
+          <div class="logo">
+            <img src="icons/logo.png" alt="Logo">
+          </div>
+          <div class="icon right-icon" id="shrink">
+            <img src="icons/closee.png" alt="Icon 2">
+          </div>
+        </div>
+
+        <div id="sound-buttons-panel" class="sound-panel">
+          <button id="sound-btn-1" class="sound-btn">🔊 </button>
+          <button id="sound-btn-2" class="sound-btn">🔊 </button>
+          <button id="sound-btn-3" class="sound-btn">🔊 </button>
+          <button id="sound-btn-4" class="sound-btn">🔊 </button>
+        </div>
+        
+        
         <div class="row shapes">
           <!-- <label class="title">Shapes</label> -->
           <ul class="options">
+            
             <ul class="shape top-shape">
               <li class="option tool" id="rectangle">
                 <img src="icons/x-18.png" alt="" />
               </li>
-              <div class="vertical-line"></div>
-              <li class="option tool" id="rectangle-filled">
-                <img src="icons/x-12.png" alt="" />
-              </li>
-            </ul>
-            <div class="horizontal-line"></div>
-            <ul class="shape">            
+              <div class="vertical-lines"></div>
+
               <li class="option tool" id="circle">
                 <img src="icons/x-20.png" alt="" />
               </li>
-              <li class="option tool" id="circle-filled">
-                <img src="icons/x-14.png" alt="" />
-              </li>
-            </ul>
-            <div class="horizontal-line"></div>
-            <ul class="shape">            
+              <div class="vertical-lines"></div>
+
               <li class="option tool" id="triangle">
                 <img src="icons/x-19.png" alt="" />
               </li>
+              
+            </ul>
+            <!-- <div class="vertical-line"></div> -->
+            <div class="horizontal-line"></div>
+            <ul class="shape">            
+              <li class="option tool" id="rectangle-filled">
+                <img src="icons/x-12.png" alt="" />
+              </li>
+              <div class="vertical-lines"></div>
+
+              <li class="option tool" id="circle-filled">
+                <img src="icons/x-14.png" alt="" />
+              </li>
+              <div class="vertical-lines"></div>
+
               <li class="option tool" id="triangle-filled">
                 <img src="icons/x-13.png" alt="" />
+              </li>
+            </ul>
+            <!-- <div class="horizontal-line"></div> -->
+            <ul class="shape">            
+            </ul>
+            <div class="horizontal-line"></div>
+            <ul class="shape">    
+              
+              <li class="option tool" id="marker">
+                <img src="icons/marker(1).png" alt="" />
+              </li>
+              <div class="vertical-lines"></div>
+
+              <li class="option tool" id="arrow">
+                <img src="icons/arrow.png" alt="" />
               </li>
             </ul>
             <div class="horizontal-line"></div>
@@ -86,12 +129,22 @@
         </div>
         <div class="row draw">
           <ul class="options">
-            <li class="option active tool" id="brush">
-              <img src="icons/x-05.png" alt="" />
+            <li class="option shape active tool" id="brush">
+              <img src="icons/office-material.png" style="width: 21px; height: 21px;" alt="" />
+              <span class="geri-al tool">Kalem</span>
+              
             </li>
-            <!-- <div class="vertical-line"></div> -->
-            <li class="option tool" id="eraser" onclick="eraseDrawingArea(50, 50, 100, 100)">
+            <div class="vertical-lines"></div>
+            <li class="option shape tool" id="eraser" >
               <img src="icons/x-01.png" alt="" />
+              <span class="geri-al tool">Silgi</span>
+              
+            </li>
+            <div class="vertical-lines"></div>
+            
+            <li class="option tool clear-canvas" id="">
+              <img src="icons/dust.png" alt="" />
+              <span class="geri-al tool">Temizle</span>
             </li>
           </ul>
           <li class="option">
@@ -103,44 +156,52 @@
         </div>
         <div class="row colors">
           <ul class="options">
-            <li class="option"></li>
             <li class="option selected"></li>
+            <li class="option"></li>
             <li class="option"></li>
             <li class="option">
               <input type="color" id="color-picker" value="#4A98F7" />
             </li>
           </ul>
         </div>
-        <div class="row buttons">
-          <button  class="clear-canvas" >Sayfayı Temizle</button>
-          <!-- <button class="save-img">Ekran Görüntüsü Al</button> -->
-        </div>
+    
         <div class="row tools">
           <ul class="options icon-group">
-            <li class="option tool" id="undo-btn">
-              <img src="icons/undo.png" alt="Undo" />
-            </li>
             <li class="option tool" id="zoom-out">
               <img src="icons/zoom-min.png" alt="Zoom Out" />
+              <span class="yakın tool">Uzaklaş</span>
             </li>
-            <li class="option tool" id="navigate">
-              <img src="icons/zoom.png" />
+            <!-- <li class="option tool" id="navigate">
+              <img src="icons/zoom.png" /> -->
             </li>
             <li class="option tool" id="zoom-in">
               <img src="icons/zoom-plus.png" alt="Zoom In" />
+              <span class="yakın tool">Yakınlaş</span>
             </li>
+          </ul>
+          <div class="plus-sign">
+            <div class="horizontal"></div>
+            <div class="vertical"></div>
+          </div>
+          <ul class="options icon-group">
+            <li class="option tool" id="undo-btn">
+              <img src="icons/undo.png" alt="Undo" />
+              <span class="geri-al tool">Geri Al</span>
+            </li>
+            
             <li class="option tool" id="redo-btn">
               <img src="icons/redo.png" alt="Redo" />
+              <span class="geri-al tool">İleri Al</span>
             </li>
           </ul>
         </div>
         <div class="row nav">
          <ul class="page-tool">
           <li class="page-tool-btn" id="prev-page">
-          <img src="icons/prev-button.png" alt="Previous Page" />
+          <img src="icons/right-arrow (5).png" alt="Previous Page" />
           </li>
           <li class="page-tool-btn" id="next-page">
-          <img src="icons/play-button.png" alt="Next Page" />
+          <img src="icons/right-arrow (4).png" alt="Next Page" />
           </li>
          </ul>
         </div>
@@ -151,10 +212,22 @@
         </div> -->
         <div class="page-number">
           <span id="page-number-btn">
-            <span id="current-page">1</span> / <span id="total-pages">10</span>
+          sayfa:  <span id="current-page">1</span> / <span id="total-pages">10</span>
           </span>
         </div>
       </section>
+      <div class="bottom-buttons">
+        <button id="activity-btn">
+          <img src="icons/play.png" alt="Etkinlik Butonu">
+        </button>
+        <button id="video-btn">
+          <img src="icons/video.png" alt="Video Butonu">
+        </button>
+        <button id="music-btn">
+          <img src="icons/vynil.png" alt="Müzik Butonu">
+        </button>
+      </div>
+    </div>
     </div>
     <script src="app.js"></script>
   </body>

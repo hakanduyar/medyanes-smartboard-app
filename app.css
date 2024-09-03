@@ -1,4 +1,3 @@
-/* Import Google font - Poppins */
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
 
 * {
@@ -6,7 +5,7 @@
   padding: 0;
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
-  
+  user-select: none;
 }
 
 body {
@@ -14,7 +13,7 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-image: url("assets/cloud-bg.jpg");
+  background-image: url("assets/x-08.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -22,7 +21,7 @@ body {
   padding: 0;
   overflow: hidden;
   height: 100%;
-  width: 100%;  
+  width: 100%;
 }
 
 .container {
@@ -32,7 +31,6 @@ body {
   width: 100%;
   height: 100vh;
   position: relative;
-  
 }
 
 .drawing-board {
@@ -43,25 +41,84 @@ body {
   width: 80%;
   height: auto;
   margin: auto;
-  
 }
 
+.scroll-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: auto; /* Kaydırma için auto */
+  width: 100%; /* Ekranın genişliği */
+  height: 100%; /* Ekranın yüksekliği */
+  position: relative; /* Kanvasların konumlandırılması için */
+  padding: 20px 0; /* Üst ve alt boşluk 10px */
+
+}
+
+.canvas-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-origin: center center; /* Zoom merkezini ayarla */
+
+}
+
+canvas {
+  position: absolute; /* Üst üste bindir */
+  top: 0;
+  left: 0;
+  max-width: none; /* Zoom sırasında genişliği kontrol et */
+  max-height: none; /* Zoom sırasında yüksekliği kontrol et */
+}
 #pdf-canvas {
+  position: relative;
+  /* width: 100%;
+    height: 100%;
+     */
+  box-shadow: 0 0 40px 12px rgb(32 32 32 / 39%);
+}
+#drawing-canvas {
   position: relative;
   top: 0;
   left: 0;
   width: 100%;
-  height: auto;
-  cursor: grab; /* Fare ile tutma işareti */
-
+  height: 100%;
+  transform-origin: center center; /* Zoom merkezini ayarla */
+}
+/* Üst satır ve alt satır düzeni */
+.shape {
+  display: flex;
+  flex-direction: column; /* Üst ve alt satır düzeni için dikey */
 }
 
- .tools-board {
-  background:  #e3dddddc; /* Hafif renk geçişi */
+.shape .tooler {
+  display: flex;
+  justify-content: space-around;
+  /* margin-top: 10px; */
+}
+/* Liste elemanlarının hizalanması */
+.shape li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.tools-board {
+  background: rgb(250, 250, 250);
+  background: linear-gradient(
+    90deg,
+    rgba(250, 250, 250, 1) 0%,
+    rgba(255, 255, 255, 1) 23%,
+    rgba(255, 255, 255, 1) 38%,
+    rgba(248, 254, 255, 1) 64%,
+    rgba(250, 250, 250, 1) 100%
+  );
   position: absolute;
   left: 15%;
+  top: 1%;
   width: 200px;
-  transform: translateX(-50%);
+  transform: translateX(-50%) scale(1);
   cursor: grab;
   z-index: 1000;
   padding: 5px;
@@ -71,39 +128,150 @@ body {
 }
 
 .tools-board .row {
-  margin-bottom: 5px; 
+  margin-bottom: 0px;
 }
 
 .row .options {
   list-style: none;
-  margin: 20px 0 10px 3px;
+  margin: 6px 0 0px 0px;
 }
 
 .row .options .option {
   display: flex;
   cursor: pointer;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: 6px;
 }
 
-.tools-board .buttons{
+.tools-board .buttons {
   margin-bottom: -10px;
 }
 
-.option:is(:hover, .active) img {
-  filter: invert(7%) sepia(40%) saturate(30%) hue-rotate(60deg)
-    brightness(100%) contrast(40%);
-    /* opacity: 0.6  ; */
+.shape .option:is(:hover, .active) img {
+  /* filter: invert(7%) sepia(40%) saturate(30%) hue-rotate(60deg)
+        brightness(100%) contrast(40%); */
+  transition: all 0.3s ease;
+  scale: 1.2;
+  /* opacity: 0.6  ; */
+}
+
+.row .options .option:hover img {
+  /* filter: invert(7%) sepia(40%) saturate(30%) hue-rotate(60deg)
+      brightness(100%) contrast(40%); */
+  transition: all 0.3s ease;
+  scale: 1.3;
+}
+
+.option img {
+  filter: none; /* Hover dışındayken filtreleri sıfırla */
+  transition: all 0.3s ease;
+  scale: 1;
 }
 
 .option :where(span, label) {
-  color: #5a6168;
+  color: #000000;
   cursor: pointer;
-  padding-left: 10px;
+  /* padding-left: 10px; */
+  font-weight: bold;
+  font-size: 12px;
 }
 
-.option:is(:hover, .active) :where(span, label) {
-  color: #4a98f7;
+.tooler {
+  display: flex;
+  justify-content: space-around;
+}
+
+.tools-board .shapes .shape {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 0px;
+  flex-direction: row;
+  /* margin-top: 25px; */
+  /* padding-right: 15px; */
+}
+
+.tolest {
+  margin-bottom: 4px;
+}
+
+.tools-board .shapes .options .top-shape {
+  margin-top: 2px;
+}
+.title {
+  display: flex;
+  justify-content: center;
+}
+
+.toolbar-head {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: -60px;
+}
+
+.icon {
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  margin-bottom: 150px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative; /* Logo'nun yukarıda durması için */
+  margin: 0 10px; /* İkonlar arasında boşluk */
+}
+
+.logo img {
+  width: 90px; /* Logo'nun boyutunu ayarlayın */
+  height: auto; /* Yüksekliği otomatik ayarla */
+  position: relative;
+  top: -40px; /* Logo'nun yukarıda durmasını sağlar */
+}
+
+.icon img {
+  width: 28px; /* İkonların boyutunu ayarlayın */
+  height: 28px; /* Yüksekliği otomatik ayarla */
+}
+
+.draw .options {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 4px;
+  margin-bottom: 0px;
+}
+
+.tools-board .shapes .options .shape {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 0px;
+}
+
+.options .shape {
+  /* margin: 0px 0 5px 0; */
+}
+
+/* .vertical-line {
+    border-left: 1.5px solid #332d2d26; 
+    height: 205px; 
+    position: absolute;
+  }*/
+.horizontal-line {
+  border-top: 1.5px solid #332d2d26;
+  width: 100%;
+  position: relative;
+  margin: 0 0 10px 0;
+}
+
+.option {
+  display: block;
+}
+
+.tools-board .marker {
+  display: none;
 }
 
 .option #fill-color {
@@ -121,13 +289,13 @@ body {
 .option #size-slider {
   width: 100%;
   height: 5px;
-  margin-top: 17px;
-  margin-bottom: 20px;
+  margin-top: 16px;
+  margin-bottom: 16px;
 }
 
 .option img {
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
 }
 .option .shape img:nth-last-child() {
   width: 36px;
@@ -136,26 +304,28 @@ body {
 
 .colors .options {
   display: flex;
-  justify-content: space-between;
-  margin-top: 9px;
-  margin-bottom: 15px;
+  justify-content: space-around;
+  margin-top: 7px;
+  margin-bottom: 0px;
+  background-color: #f3f3f3;
+  padding-top: 6px;
+  border-radius: 16px;
 }
 
 .colors .option {
   height: 20px;
   width: 20px;
   border-radius: 50%;
-  margin-top: 3px;
   position: relative;
 }
 
 .colors .option:nth-child(1) {
-  background-color: #fff;
-  border: 1px solid #bfbfbf;
+  background-color: #000;
 }
 
 .colors .option:nth-child(2) {
-  background-color: #000;
+  border: 1px solid #bfbfbf;
+  background-color: #fff;
 }
 
 .colors .option:nth-child(3) {
@@ -186,49 +356,48 @@ body {
 .colors .option:first-child.selected::before {
   border-color: #ccc;
 }
+.colors .option:nth-child(2).option.selected::before {
+  border-color: #cac7c7;
+}
 
 .option #color-picker {
   opacity: 0;
   cursor: pointer;
 }
-
-.buttons button {
-  width: 100%;
-  color: #fff;
-  border: none;
-  outline: none;
-  padding: 5px 0;
-  font-size: 0.9rem;
-  margin-bottom: 13px;
-  background: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.buttons .clear-canvas {
+.option-tool {
   transition: all 0.3s ease;
-  background-color: #b3d5ff90;
-  padding: 10px 5px;
-
+  background-color: #4a98f7;
+  padding: 8px 5px;
+  margin-bottom: 15px;
   color: #000000;
-
   border-radius: 8px;
-
-  font-family: 'Arial', sans-serif;
-
+  font-family: "Arial", sans-serif;
   font-size: 14px;
-
   font-weight: bold;
-
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-
   z-index: 1000;
+  list-style-type: none;
+  display: flex;
+  justify-content: center;
 }
 
-.clear-canvas:hover {
+.option-tool:hover {
   color: #fff;
   background: #6c757d;
 }
+
+/* .buttons button {
+    width: 100%;
+    color: #fff;
+    border: none;
+    outline: none;
+    padding: 5px 0;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    background: none;
+    border-radius: 4px;
+    cursor: pointer;
+  } */
 
 .buttons .save-img {
   transition: all 0.3s ease;
@@ -239,7 +408,7 @@ body {
 
   border-radius: 8px;
 
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
 
   font-size: 14px;
 
@@ -257,66 +426,25 @@ body {
 
 .icon-group {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
+  /* margin-top: 8px !important; */
 }
 
 .icon-group .tool img {
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
 }
 
-
-/* .tools-board .shapes .options{
- display: flex; 
-  } */
-.tools-board .shapes .options .shape{
-  display: flex;  
-  justify-content: space-around;
-}
-.tools-board .shapes .options .top-shape{
-  margin-top: 15px;
-}
-.title {
+.tools .icon-group .tool {
   display: flex;
-    justify-content: center;
+  flex-direction: column;
+  margin-bottom: 2px;
+  margin-top: 6px;
 }
 
-.draw .options{
-  display: flex;
-  justify-content: space-around;
-  margin-top: 0px;
-  margin-bottom: 2px; 
-}
-
-.options .shape{
-  margin: 0 0 3px 0;
-}
-
-.vertical-line {
-  border-left: 1.5px solid #332d2d26; /* Çizginin kalınlığı ve rengi */
-  height: 195px; /* Çizginin yüksekliği */
-  position: absolute;
-  /* margin: 8px 0px 4px 0; Yatayda boşluk (yatay çizgilere göre ayarlayın) */
-}
-.horizontal-line {
-  border-top: 1.5px solid #332d2d26; /* Yatay çizgi */
-  width: 100%; /* Çizginin genişliği */
-  position: relative;
-  margin: 0 0 15px 0; /* Dikeyde boşluk */
-}
-
-.option {
-  display: block; /* Liste işaretleyicilerini gizler */
-}
-
-.tools-board .marker {
-  display: none; /* Marker sınıfını gizler */
-}
-
-/* Popup Stil */
 .popup {
-  display: none; /* Varsayılan olarak gizli */
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
@@ -325,7 +453,7 @@ body {
   background-color: rgba(0, 0, 0, 0.5);
   justify-content: center;
   align-items: center;
-  z-index: 1001; /* Tools-board'ın üstünde */
+  z-index: 1001;
 }
 
 .popup-content {
@@ -360,17 +488,16 @@ body {
   border-radius: 4px;
 }
 
-
 .page-number {
   position: relative;
-  margin-bottom: 5px;
+  margin-bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
   background-color: #b3d5ff90;
   color: #000000;
-  padding: 8px 64px;
+  padding: 8px 45px;
   border-radius: 8px;
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
   font-size: 14px;
   font-weight: bold;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -385,69 +512,42 @@ body {
   background: #6c757d;
 }
 
-.option-tool{
-    transition: all 0.3s ease;
-    background-color: #4a98f7;
-    padding: 8px 5px;
-    margin-bottom: 15px;
-    color: #000000;
-    border-radius: 8px;
-    font-family: 'Arial', sans-serif;
-    font-size: 14px;
-    font-weight: bold;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-    list-style-type: none; /* Nokta işaretini kaldırır */
-    display: flex;
-    justify-content: center;
-  }
-  
-  .option-tool:hover {
-    color: #fff;
-    background: #6c757d;
-  }
-
-  .page-tool{
-    display: flex;
+.page-tool {
+  display: flex;
   justify-content: space-between;
   align-items: center;
   list-style: none;
-  }
+  margin-top: 10px;
+}
 
-  /* .page-tool .tool img {
-    width: 24px;
-    height: 24px;
-  } */
+.page-tool-btn {
+  cursor: pointer;
+  align-items: center;
+  margin-bottom: 10px;
+  transition: all 0.3s ease;
+  background-color: #4a98f7;
+  padding: 4px 35px;
+  color: #000000;
+  border-radius: 8px;
+  font-family: "Arial", sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  list-style-type: none;
+  display: flex;
+  justify-content: space-around;
+}
 
-  .page-tool-btn {
-    cursor: pointer;
-    align-items: center;
-    margin-bottom: 15px;
-    transition: all 0.3s ease;
-    background-color: #4a98f7;
-    padding: 4px 35px;
-    color: #000000;
-    border-radius: 8px;
-    font-family: 'Arial', sans-serif;
-    font-size: 14px;
-    font-weight: bold;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-    list-style-type: none; /* Nokta işaretini kaldırır */
-    display: flex;
-    justify-content: space-around;
-  }
-
-  .page-tool-btn:hover{
+.page-tool-btn:hover {
   color: #fff;
   background: #6c757d;
 }
 
-  .page-tool-btn img {
-    width: 24px;
-    height: 24px;
-  }
-
+.page-tool-btn img {
+  width: 22px;
+  height: 22px;
+}
 
 .open-keyboard {
   position: relative;
@@ -459,7 +559,7 @@ body {
   color: #000000;
   padding: 8px 70px;
   border-radius: 8px;
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
   font-size: 14px;
   font-weight: bold;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -483,7 +583,7 @@ body {
 }
 
 .popup-content {
-  background: white;
+  background: #dcf0fa;
   padding: 20px;
   border-radius: 10px;
   text-align: center;
@@ -511,35 +611,41 @@ body {
 }
 
 .num-buttons button {
-  background: #f0f0f0;
+  background: #fffffff1;
   padding: 15px;
   font-size: 18px;
-  border: 1px solid ;
+  border: 1px solid rgb(0, 0, 0);
   cursor: pointer;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.388);
-
+  color: rgb(0, 0, 0);
 }
 
 .num-buttons button:hover {
-  background-color: #5a5c5f74;
+  background-color: #2869b861;
+  color: #ffffff;
 }
 
 #go-button {
-  background-color: #5a5c5f74;
+  background-color: #4a98f7;
+  border: 1px solid black;
+  color: #ffffff;
 }
 
 #go-button:hover {
-  background-color: #f0f0f0;
+  background-color: #2869b861;
+  color: #fff;
 }
 
+#clear {
+  background-color: #4a98f7;
+  border: 1px solid black;
+  color: #ffffff;
+}
 
- #clear { 
-  background-color: #5a5c5f74;
- }
-
- #clear:hover {
-  background-color: #f0f0f0;
+#clear:hover {
+  background-color: #2869b861;
+  color: #fff;
 }
 
 #page-input {
@@ -548,13 +654,12 @@ body {
   font-size: 18px;
   text-align: center;
   margin-bottom: 20px;
-  border: 1px solid ;
+  border: 1px solid;
   border-radius: 5px;
   box-shadow: 0px 0px 7px 2px rgba(0, 0, 0, 0.388);
-
+  background-color: #ffffff;
 }
-/* Yeni Popup Klavye Stil */
-/* Klavye Popup */
+
 #keyboard-popup .popup-content {
   background-color: #fff;
   padding: 30px;
@@ -595,18 +700,19 @@ body {
   background-color: #e0e0e0;
 }
 
-#keyboard-input{
+#keyboard-input {
   width: 100%;
   padding: 10px;
   font-size: 18px;
   text-align: center;
   margin-top: 20px;
-  border: 1px solid ;
+  border: 1px solid;
   border-radius: 5px;
   box-shadow: 0px 0px 7px 2px rgba(0, 0, 0, 0.388);
 }
 
-#clear-keyboard, #submit-keyboard {
+#clear-keyboard,
+#submit-keyboard {
   padding: 10px 20px;
   background-color: #4a98f7;
   color: white;
@@ -619,11 +725,13 @@ body {
   width: 45%;
 }
 
-#clear-keyboard:hover, #submit-keyboard:hover {
+#clear-keyboard:hover,
+#submit-keyboard:hover {
   background-color: #356bb2;
 }
 
-#clear-keyboard:active, #submit-keyboard:active {
+#clear-keyboard:active,
+#submit-keyboard:active {
   background-color: #2b5792;
 }
 
@@ -643,11 +751,9 @@ body {
   color: #ff5c5c;
 }
 
-
-
 .text-container {
   position: absolute;
-  border: 2px dashed #00F;
+  border: 2px dashed #00f;
   padding: 5px;
   resize: both;
   overflow: hidden;
@@ -657,28 +763,25 @@ body {
 .text-container .resize-handle {
   width: 15px;
   height: 15px;
-  background: #00F;
+  background: #00f;
   position: absolute;
   bottom: 0;
   right: 0;
   cursor: nwse-resize;
 }
 
-/* CSS Kodları */
 .hand-cursor {
-  cursor: grab; /* El imleci */
+  cursor: grab;
 }
 
 .default-cursor {
-  cursor: default; /* Varsayılan imleç */
+  cursor: default;
 }
-
-/* Var olan CSS kodları */
 
 .image-container {
   position: relative;
   width: 100%;
-  height: 500px; /* Örneğin bir yükseklik */
+  height: 500px;
   overflow: hidden;
   cursor: grab;
 }
@@ -690,6 +793,222 @@ body {
   transform-origin: 0 0;
 }
 
+.dropbtn {
+  background-color: #3498db;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
 
+.dropbtn:hover,
+.dropbtn:focus {
+  background-color: #2980b9;
+}
 
-/* Diğer stil ayarları */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+.show {
+  display: block;
+}
+
+.plus-sign {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.horizontal {
+  border-top: 1.5px solid #332d2d26;
+  position: absolute;
+  width: 180px;
+  height: 1px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 40%);
+}
+
+/* .horizontal-line {
+  border-top: 1.5px solid #332d2d26; 
+  position: absolute;
+  width: 180px; 
+  height: 81px;  
+  top: 50%; 
+  left: 50%;
+  transform: translate(-50%, -3000%);
+}  */
+
+.horizontal-line-first {
+  border-top: 1.5px solid #332d2d26;
+  position: absolute;
+  width: 180px;
+  /* height: 81px;  */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -3100%);
+}
+
+.vertical {
+  border-left: 1.5px solid #332d2d26;
+  position: absolute;
+  width: 2px;
+  height: 85px;
+  top: 10%;
+  left: 50%;
+  transform: translate(-45%, -44%);
+}
+.vertical-line {
+  border-left: 1.5px solid #332d2d26;
+  position: absolute;
+  width: 2px;
+  height: 28px;
+  top: 31%;
+  left: 50%;
+  transform: translate(-120%, 270%);
+}
+.vertical-lines {
+  border-left: 1.5px solid #332d2d26;
+  /* position: absolute; */
+  /* width: 2px; */
+  height: 25px;
+  top: 31%;
+  left: 50%;
+  transform: translate(-0%, -10%);
+}
+
+.clear-canvas {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 2000;
+}
+
+.dropdown-menu li {
+  padding: 10px;
+  z-index: 2000;
+}
+
+.dropdown-menu li:hover {
+  background-color: #f0f0f0;
+}
+
+.dropdown-menu img {
+  width: 24px;
+  height: 24px;
+  z-index: 2000;
+}
+
+.sound-panel {
+  position: absolute;
+  top: 50px; /* Toolbarın üst kısmına yakın olacak şekilde */
+  right: -22px; /* Sağ üst köşe */
+  display: flex;
+  height: 120px;
+  flex-direction: column;
+  border: 2px solid #f7f6f6;
+  background: #e6e6e6;
+  /* padding: 10px; */
+  border-radius: 5px;
+  box-shadow: 10px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.sound-btn {
+  background: #f9fcfce4;
+  border: none;
+  /* border-radius: 50%; */
+  padding: 2px;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+.bottom-buttons {
+  background-color: #ffffff;
+  position: absolute;
+  border: 2px rgba(0, 0, 0, 0.772) dotted;
+  border-radius: 10px;
+  top: 22px; /* Alt kısma yakın olacak şekilde */
+  right: 15%;
+  transform: translateX(50%);
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 4px;
+  padding: 6px 0 0px 0;
+  align-items: center;
+  width: 200px; /* Butonları yerleştirmek için genişlik */
+}
+
+.bottom-buttons button {
+  background: transparent;
+  border: none;
+  transition: all 0.3s ease;
+
+  cursor: pointer;
+}
+
+.bottom-buttons button:hover {
+  transform: scale(1.2);
+}
+
+.bottom-buttons img {
+  width: 44px;
+  height: 44px;
+}
+
+.row-shapes.option.tool {
+  display: flex;
+  flex-direction: column;
+}
+
+.draw .options .tool {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.shape .took {
+  /* display: flex; */
+  padding-right: 13px;
+}
+
+.took li {
+  display: flex;
+}

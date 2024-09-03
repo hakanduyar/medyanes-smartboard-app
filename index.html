@@ -1,18 +1,99 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Çocuk Kütüphanesi</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kitap Kütüphanesi</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Signika:wght@300..700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
     <div class="library-container">
-        <h1>Kitap Kütüphanesi</h1>
-        <div id="book-list" class="book-list">
-            <!-- Kitap kapak resimleri dinamik olarak buraya yüklenecek -->
-        </div>
+      <h1>KİTAP KÜTÜPHANESİ</h1>
+      <div id="book-list" class="book-list"></div>
     </div>
+    <script>
+      // KITAP VERILERINI TANIMLAMA BURADA YAPILACAK. (GUZEL BIR KITAP YAPISI OLUSTURALIM HAKAN, MANTIKLI ISIMLERLE BIRLIKTE YAPALIM)
+      const booksData = [
+        {
+          title: "Matematik Kitabı",
+          folder: "m1",
+          cover: "assets/covers/m1_Page_01.jpg",
+          pageCount: 32,
+        },
+        {
+          title: "Aile Katılım Kitabı",
+          folder: "a1",
+          cover: "assets/covers/a1_Page_01.jpg",
+          pageCount: 32,
+        },
+        {
+          title: "Bilgi Peteği 1. Kitap",
+          folder: "bp1",
+          cover: "assets/covers/bp1_Page_01.jpg",
+          pageCount: 32,
+        },
+        {
+          title: "Bilgi Peteği 2. Kitap",
+          folder: "bp2",
+          cover: "assets/covers/bp2_Page_01.jpg",
+          pageCount: 32,
+        },
+        {
+          title: "Bilgi Peteği 3. Kitap",
+          folder: "bp3",
+          cover: "assets/covers/bp3_Page_01.jpg",
+          pageCount: 32,
+        },
+        {
+          title: "Bilgi Peteği 4. Kitap",
+          folder: "bp4",
+          cover: "assets/covers/bp4_Page_01.jpg",
+          pageCount: 32,
+        },
+        {
+          title: "Bilgi Peteği 5. Kitap",
+          folder: "bp5",
+          cover: "assets/covers/bp5_Page_01.jpg",
+          pageCount: 32,
+        },
+        {
+          title: "Bilgi Peteği 6. Kitap",
+          folder: "bp6",
+          cover: "assets/covers/bp6_Page_01.jpg",
+          pageCount: 32,
+        },
+        {
+          title: "Bilgi Peteği 7. Kitap",
+          folder: "bp7",
+          cover: "assets/covers/bp7_Page_01.jpg",
+          pageCount: 32,
+        },
+        {
+          title: "Bilgi Peteği 8. Kitap",
+          folder: "bp8",
+          cover: "assets/covers/bp8_Page_01.jpg",
+          pageCount: 32,
+        },
+        {
+          title: "Bilgi Peteği 9. Kitap",
+          folder: "bp9",
+          cover: "assets/covers/bp9_Page_01.jpg",
+          pageCount: 32,
+        },
+        {
+          title: "Bilgi Peteği 10. Kitap",
+          folder: "bp10",
+          cover: "assets/covers/bp10_Page_01.jpg",
+          pageCount: 32,
+        },
+      ];
+    </script>
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
